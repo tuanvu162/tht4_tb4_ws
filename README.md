@@ -26,7 +26,7 @@ Mở terminal và chạy các lệnh sau để tải dự án từ GitHub về t
 ```bash
 # 1. Tai kho chua ve may
 cd ~
-git clone [https://github.com/tuanvu162/tht4_tb4_ws.git](https://github.com/tuanvu162/tht4_tb4_ws.git)
+git clone https://github.com/tuanvu162/tht4_tb4_ws.git
 
 # 2. Di chuyen vao workspace va cai dat cac goi phu thuoc
 cd ~/tht4_tb4_ws
