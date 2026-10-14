@@ -64,18 +64,15 @@ ros2 action send_goal /undock irobot_create_msgs/action/Undock "{}"
 
 **Bước 2.3 — Điều khiển robot quét bản đồ (Chọn 1 trong 2 cách tại Terminal 2):**
 
-Sau khi terminal báo `SUCCEEDED`, bạn có thể điều khiển robot bằng bàn phím hoặc chạy script tự động:
+Sau khi terminal báo `SUCCEEDED`, điều khiển robot bằng bàn phím:
 
-* **Cách A — Điều khiển thủ công bằng bàn phím (Teleop):**
+* **Điều khiển bằng bàn phím (Teleop):**
   ```bash
   ros2 run teleop_twist_keyboard teleop_twist_keyboard
   ```
   Giữ terminal teleop được chọn: `i` tiến, `,` lùi, `j/l` xoay, `k` dừng.
 
-* **Cách B — Tự động di chuyển và né tường (Auto Explore):**
-  ```bash
-  python3 ~/tht4_tb4_ws/src/tht4_tb4_nav/tht4_tb4_nav/auto_explore.py
-  ```
+
 
 Khảo sát phần lớn mê cung, theo dõi map mở rộng trên RViz2 (Fixed Frame là `map`, Durability Policy của `/map` là `Transient Local`).  
 Có thể kiểm tra tần số `/scan` và `/odom` bằng `ros2 topic hz /scan` và `ros2 topic hz /odom`.
