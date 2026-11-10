@@ -1,0 +1,13 @@
+yolo_detector:
+  ros__parameters:
+    use_sim_time: true
+    camera_topic: /oakd/rgb/preview/image_raw
+    image_topic: /yolo/image
+    detections_topic: /yolo/detections
+    model_path: "~/tht4_tb4_ws/models/yolov8n.pt"
+    confidence: 0.4
+    image_size: 320
+    inference_hz: 2.0
+    cpu_threads: 2
+    max_detections: 20
+    log_interval: 2.0

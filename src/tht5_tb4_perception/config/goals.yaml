@@ -1,0 +1,10 @@
+waypoint_navigation:
+  ros__parameters:
+    use_sim_time: true
+    frame_id: map
+    goal_x: [-2.550914764404297, -2.691612482070923, -4.502142429351807]
+    goal_y: [-0.1849978119134903, 1.7170605659484863, 3.153846025466919]
+    # Heading along map +X; change if another arrival heading is preferable.
+    goal_yaw: [0.0, 0.0, 0.0]
+    goal_timeout: 180.0
+    localization_timeout: 120.0
