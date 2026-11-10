@@ -1,7 +1,5 @@
 # Bài TH Tuần 5 — TurtleBot 4 Navigation và YOLO
 
-Nhánh **`BaiTHTuan5`** — hướng dẫn riêng cho bài thực hành tuần 5.
-
 Robot định vị trên bản đồ cũ bằng AMCL, tự đi qua ít nhất 3 goal bằng Nav2
 và nhận diện vật thể từ camera RGB bằng YOLOv8n.
 
@@ -114,13 +112,3 @@ ign fuel download -u https://fuel.gazebosim.org/1.0/OpenRobotics/models/foldable
 Sửa `chair.model_file` trong [config/scene_objects.yaml](src/tht5_tb4_perception/config/scene_objects.yaml)
 cho đúng file `model.sdf` đã tải, rồi chạy launch không có `spawn_chair:=false`.
 Tham số camera, model và ngưỡng nhận diện nằm trong [config/yolo.yaml](src/tht5_tb4_perception/config/yolo.yaml).
-
-## 5. Nội dung nộp
-
-- Video Google Drive công khai: load map, localization, 3 goal thành công không
-  va chạm và YOLO chạy song song có bounding box/class/confidence.
-- Repo Public chứa code, launch, cấu hình, bản đồ và README này.
-- PDF ngắn: cấu trúc và luồng chương trình, node/topic/action, cách AMCL/Nav2
-  hoạt động, ảnh kết quả và link video/GitHub.
-
-**Video demo:** chưa bổ sung. **Báo cáo PDF:** chưa bổ sung.
