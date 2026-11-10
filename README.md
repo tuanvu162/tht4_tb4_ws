@@ -1,115 +1,126 @@
-# TurtleBot 4 — SLAM và Nav2
+# Bài TH Tuần 5 — TurtleBot 4 Navigation và YOLO
 
-Mô phỏng TurtleBot 4 trong world `maze`: tạo bản đồ bằng SLAM Toolbox (kết hợp điều khiển bằng `teleop` hoặc tự hành `auto_explore`), lưu map, sau đó định vị bằng AMCL và điều hướng bằng Nav2.
+Nhánh **`BaiTHTuan5`** — hướng dẫn riêng cho bài thực hành tuần 5.
 
-## Cấu trúc thư mục
+Robot định vị trên bản đồ cũ bằng AMCL, tự đi qua ít nhất 3 goal bằng Nav2
+và nhận diện vật thể từ camera RGB bằng YOLOv8n.
 
-```text
-tht4_tb4_ws/
-└── src/
-    └── tht4_tb4_nav/
-        ├── config/          # Cau hinh SLAM (slam.yaml)
-        ├── launch/          # File launch tich hop (bringup.launch.py)
-        ├── maps/            # Ban do da luu (map.pgm, map.yaml)
-        ├── rviz/            # Cau hinh hien thi RViz2 (maze.rviz)
-        └── tht4_tb4_nav/    # Node Python (auto_explore.py, avoidance.py)
-```
+## 1. Chuẩn bị và build
 
----
-
-## 1. Tải mã nguồn, cài đặt và build
-
-Yêu cầu hệ thống: **Ubuntu 22.04**, **ROS 2 Humble**, **TurtleBot 4 Ignition Simulator** và **Nav2**.
-
-Mở terminal và chạy các lệnh sau để tải dự án từ GitHub về thư mục `~` (Home) và biên dịch:
+Yêu cầu Ubuntu 22.04, ROS 2 Humble và TurtleBot 4 Simulation đã cài từ bài trước.
+Dùng cả hai package `tht4_tb4_nav` và `tht5_tb4_perception` trong repo này.
+Bản đồ world `maze` nằm tại [map.yaml](src/tht4_tb4_nav/maps/map.yaml) và
+[map.pgm](src/tht4_tb4_nav/maps/map.pgm).
 
 ```bash
-# 1. Tai kho chua ve may
-cd ~
-git clone https://github.com/tuanvu162/tht4_tb4_ws.git
+sudo apt install ros-humble-turtlebot4-navigation \
+  ros-humble-nav2-simple-commander ros-humble-cv-bridge python3-pip
+/usr/bin/python3 -m pip install --user torch torchvision \
+  --index-url https://download.pytorch.org/whl/cpu
+/usr/bin/python3 -m pip install --user 'numpy<2' 'opencv-python>=4.6,<4.12' ultralytics
 
-# 2. Di chuyen vao workspace va cai dat cac goi phu thuoc
 cd ~/tht4_tb4_ws
 source /opt/ros/humble/setup.bash
-rosdep install --from-paths src --ignore-src -r -y
+rosdep install --from-paths src/tht4_tb4_nav src/tht5_tb4_perception --ignore-src -r -y
+PYTHONNOUSERSITE=1 colcon build \
+  --packages-select tht4_tb4_nav tht5_tb4_perception --symlink-install
 
-# 3. Build package va nap moi truong
-colcon build --packages-select tht4_tb4_nav
-source install/setup.bash
+mkdir -p models
+cd models
+/usr/bin/python3 -c 'from ultralytics import YOLO; YOLO("yolov8n.pt")'
 ```
 
----
+Model được lưu tại `~/tht4_tb4_ws/models/yolov8n.pt`, theo `config/yolo.yaml`.
+Lần đầu tải model cần mạng.
 
-## 2. Mapping (Tạo bản đồ SLAM)
+## 2. Mở mô phỏng và định vị
 
-**Bước 2.1 — Khởi chạy Gazebo, RViz2 và SLAM (Terminal 1):**
+Chạy phần thiết lập này trong **mỗi terminal ROS**:
 
 ```bash
 cd ~/tht4_tb4_ws
 source /opt/ros/humble/setup.bash
 source install/setup.bash
-ros2 launch tht4_tb4_nav bringup.launch.py mode:=mapping
+export ROS_DOMAIN_ID=30
 ```
 
-*(Nếu muốn mở cấu hình RViz2 đã lưu sẵn của dự án ở một terminal riêng: `rviz2 -d ~/tht4_tb4_ws/src/tht4_tb4_nav/rviz/maze.rviz`)*
-
-**Bước 2.2 — Rời đế sạc / Undock (Terminal 2):**
-
-Chờ robot xuất hiện và Gazebo đang ở trạng thái Play, chạy lệnh:
+**Terminal 1:**
 
 ```bash
-source /opt/ros/humble/setup.bash
-ros2 action send_goal /undock irobot_create_msgs/action/Undock "{}"
-```
-
-**Bước 2.3 — Điều khiển robot quét bản đồ (Chọn 1 trong 2 cách tại Terminal 2):**
-
-Sau khi terminal báo `SUCCEEDED`, điều khiển robot bằng bàn phím:
-
-* **Điều khiển bằng bàn phím (Teleop):**
-  ```bash
-  ros2 run teleop_twist_keyboard teleop_twist_keyboard
-  ```
-  Giữ terminal teleop được chọn: `i` tiến, `,` lùi, `j/l` xoay, `k` dừng.
-
-
-
-Khảo sát phần lớn mê cung, theo dõi map mở rộng trên RViz2 (Fixed Frame là `map`, Durability Policy của `/map` là `Transient Local`).  
-Có thể kiểm tra tần số `/scan` và `/odom` bằng `ros2 topic hz /scan` và `ros2 topic hz /odom`.
-
----
-
-## 3. Lưu bản đồ
-
-Khi bản đồ đã quét kín mê cung, nhấn `k` để dừng robot và bấm `Ctrl + C` tại cửa sổ điều khiển (giữ Terminal 1 đang chạy SLAM). Tại Terminal 2, chạy lệnh lưu bản đồ:
-
-```bash
-source /opt/ros/humble/setup.bash
-ros2 run nav2_map_server map_saver_cli \
-  -f ~/tht4_tb4_ws/src/tht4_tb4_nav/maps/map \
-  --ros-args -p use_sim_time:=true -p save_map_timeout:=10.0
-```
-
-Kiểm tra thư mục `maps/` đã có đủ 2 file `map.yaml` và `map.pgm`, bản đồ không bị nhân đôi tường hoặc lệch rõ rệt. Sau đó bấm `Ctrl + C` ở Terminal 1 và đóng Gazebo cũ.
-
----
-
-## 4. Localization và Navigation (AMCL & Nav2)
-
-**Bước 4.1 — Khởi động lại với bản đồ đã lưu, AMCL và Nav2 (Terminal 1):**
-
-```bash
-cd ~/tht4_tb4_ws
-source /opt/ros/humble/setup.bash
-source install/setup.bash
 ros2 launch tht4_tb4_nav bringup.launch.py mode:=navigation \
   map:=$HOME/tht4_tb4_ws/src/tht4_tb4_nav/maps/map.yaml
 ```
 
-**Bước 4.2 — Đặt vị trí ban đầu và gửi điểm đích trên RViz2:**
-1. Mở khóa robot khỏi trạm sạc (nếu cần):
-   ```bash
-   ros2 action send_goal /undock irobot_create_msgs/action/Undock "{}"
-   ```
-2. Trên thanh công cụ RViz2, chọn **2D Pose Estimate**, nhấp và kéo mũi tên tại vị trí thực tế của robot trong mê cung để khởi tạo AMCL.
-3. Chọn công cụ **Nav2 Goal**, nhấp vào vị trí đích trên bản đồ để robot tự động lập quỹ đạo và di chuyển tới đích.
+Trong RViz, đặt **Fixed Frame = map**, dùng **2D Pose Estimate** đặt đúng vị trí
+và hướng robot; kiểm tra `/scan` khớp tường. Gazebo phải ở trạng thái Play,
+robot sẵn sàng di chuyển.
+
+Nếu dùng GPU NVIDIA, chạy các lệnh sau trước khi mở mô phỏng:
+
+```bash
+unset LIBGL_ALWAYS_SOFTWARE
+export __NV_PRIME_RENDER_OFFLOAD=1
+export __GLX_VENDOR_LIBRARY_NAME=nvidia
+export QT_QPA_PLATFORM=xcb
+```
+
+## 3. Lấy tọa độ và chạy Navigation
+
+Dùng **Publish Point** trên RViz và đọc tọa độ:
+
+```bash
+ros2 topic echo /clicked_point
+```
+
+Lưu ít nhất 3 đích vào [config/goals.yaml](src/tht5_tb4_perception/config/goals.yaml): `goal_x`,
+`goal_y` tính bằng mét trong frame `map`, `goal_yaw` tính bằng radian.
+Publish Point chỉ cung cấp vị trí; chọn yaw theo hướng muốn robot tới đích.
+
+**Terminal 2:**
+
+```bash
+ros2 run tht5_tb4_perception waypoint_navigation --ros-args \
+  --params-file "$PWD/src/tht5_tb4_perception/config/goals.yaml"
+```
+
+Node dùng `nav2_simple_commander` gửi lần lượt **Goal 1 → Goal 2 → Goal 3** qua
+`NavigateToPose`. Chỉ gửi đích tiếp theo khi đích trước `SUCCEEDED`; dừng tuyến
+nếu thất bại, timeout hoặc LiDAR không hợp lệ. Không dùng teleop hoặc chuột đặt
+goal khi node đang chạy. Nhấn Ctrl+C để yêu cầu hủy goal.
+
+## 4. Chạy YOLO song song
+
+**Terminal 3:** mở YOLO trước hoặc trong khi chạy waypoint:
+
+```bash
+ros2 launch tht5_tb4_perception tht5.launch.py spawn_chair:=false
+```
+
+Trong RViz, thêm **Image**, chọn `/yolo/image`. Node đọc
+`/oakd/rgb/preview/image_raw`, dùng `cv_bridge` chuyển sang OpenCV, chạy YOLO,
+vẽ bounding box/class/confidence và in kết quả ra terminal. Xem JSON bằng:
+
+```bash
+ros2 topic echo /yolo/detections std_msgs/msg/String
+```
+
+Cần có vật thể như ghế/người trong tầm camera; model COCO không nhận diện tường.
+Nếu muốn launch tự thêm ghế mẫu, tải model:
+
+```bash
+ign fuel download -u https://fuel.gazebosim.org/1.0/OpenRobotics/models/foldable_chair
+```
+
+Sửa `chair.model_file` trong [config/scene_objects.yaml](src/tht5_tb4_perception/config/scene_objects.yaml)
+cho đúng file `model.sdf` đã tải, rồi chạy launch không có `spawn_chair:=false`.
+Tham số camera, model và ngưỡng nhận diện nằm trong [config/yolo.yaml](src/tht5_tb4_perception/config/yolo.yaml).
+
+## 5. Nội dung nộp
+
+- Video Google Drive công khai: load map, localization, 3 goal thành công không
+  va chạm và YOLO chạy song song có bounding box/class/confidence.
+- Repo Public chứa code, launch, cấu hình, bản đồ và README này.
+- PDF ngắn: cấu trúc và luồng chương trình, node/topic/action, cách AMCL/Nav2
+  hoạt động, ảnh kết quả và link video/GitHub.
+
+**Video demo:** chưa bổ sung. **Báo cáo PDF:** chưa bổ sung.
