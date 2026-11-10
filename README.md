@@ -123,36 +123,3 @@ Luồng: `micro → Whisper → /voice_command → voice_navigation → /navigat
 `ARRIVED`, `SUCCEEDED`, `INVALID`, `FAILED` hoặc trạng thái hủy. Nếu mất scan,
 quá thời gian hoặc goal thất bại, chương trình dừng tuyến/yêu cầu hủy phù hợp.
 
-## 4. Đổi khu vực và tạo lại bản đồ phân vùng
-
-Sửa tên, aliases, đích trong `src/tht7_tb4/config/regions.yaml`. Đích cũng là
-hạt giống phân vùng nên đổi đích sẽ đổi ranh giới vùng. Tạo lại ảnh:
-
-```bash
-ros2 run tht7_tb4 segment_map --output "$PWD/src/tht7_tb4/results"
-```
-
-Khởi động lại launch sau khi đổi cấu hình. Chi tiết thêm tại
-[README package](src/tht7_tb4/README.md).
-
-## 5. Kiểm tra và nội dung nộp
-
-```bash
-/usr/bin/python3 -m pytest src/tht7_tb4/test -q
-```
-
-Kiểm thử kiểm tra phân vùng, câu lệnh và giao tiếp với action server giả;
-cần quay demo thực tế để chứng minh robot di chuyển và tránh vật cản.
-
-- Video demo: bản đồ có ít nhất 3 vùng; nói ít nhất 3 câu; robot tới đúng vùng;
-  tuyến A → B; thử khu vực không tồn tại. Quay cả văn bản nhận dạng và robot chạy.
-- PDF **1–2 trang**: phương pháp segmentation, chuyển tọa độ, nhận dạng giọng
-  nói, luồng điều hướng, ảnh/kết quả thử nghiệm và link video/GitHub.
-- Source, bản đồ và cấu hình trong nhánh này. Không upload môi trường Python,
-  build/log hoặc trọng số Whisper đã tải.
-
-**Video demo:** chưa bổ sung.
-
-- [Báo cáo tóm tắt 2 trang](src/tht7_tb4/report/Bao_cao_BaiTH_Tuan7.pdf)
-- [Báo cáo chi tiết 8 trang](src/tht7_tb4/report/Bao_cao_chi_tiet_BaiTH_Tuan7.pdf)
-- [Sơ đồ kiến trúc](src/tht7_tb4/report/So_do_kien_truc_THT7.png)
