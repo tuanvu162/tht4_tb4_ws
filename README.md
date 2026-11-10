@@ -1,115 +1,154 @@
-# TurtleBot 4 — SLAM và Nav2
+# Bài TH Tuần 7 — Phân vùng bản đồ và điều hướng bằng giọng nói
 
-Mô phỏng TurtleBot 4 trong world `maze`: tạo bản đồ bằng SLAM Toolbox (kết hợp điều khiển bằng `teleop` hoặc tự hành `auto_explore`), lưu map, sau đó định vị bằng AMCL và điều hướng bằng Nav2.
+Nhánh **`BaiTHTuan7`**, môi trường Ubuntu 22.04, ROS 2 Humble và TurtleBot 4
+Simulation (world `maze`). Robot nhận câu lệnh tiếng Việt, xác định khu vực
+và tự điều hướng bằng Nav2.
 
-## Cấu trúc thư mục
+## 1. Thành phần và phương pháp
 
 ```text
-tht4_tb4_ws/
-└── src/
-    └── tht4_tb4_nav/
-        ├── config/          # Cau hinh SLAM (slam.yaml)
-        ├── launch/          # File launch tich hop (bringup.launch.py)
-        ├── maps/            # Ban do da luu (map.pgm, map.yaml)
-        ├── rviz/            # Cau hinh hien thi RViz2 (maze.rviz)
-        └── tht4_tb4_nav/    # Node Python (auto_explore.py, avoidance.py)
+src/
+├── tht4_tb4_nav/     # Gazebo, AMCL, Nav2 và bản đồ bài trước
+└── tht7_tb4/         # Phân vùng, nhãn, Whisper và điều hướng giọng nói
 ```
 
----
+- **Phân vùng:** OpenCV đọc Occupancy Grid, xác định ô trống theo `map.yaml`;
+  BFS nhiều nguồn chia vùng theo khoảng cách đường đi 4 hướng từ các hạt giống.
+  Vùng không xuyên tường; tên phòng là nhãn chức năng minh họa, không tự nhận
+  diện loại phòng. Chuyển pixel sang tọa độ `map` theo resolution và origin.
+- **Gắn nhãn:** [regions.yaml](src/tht7_tb4/config/regions.yaml) lưu ID, tên,
+  aliases và đích `(x, y, yaw)`. A = Phòng học, B = Phòng thí nghiệm,
+  C = Hành lang. Điểm đích cần cách vật cản ít nhất 0,30 m.
+- **Giọng nói:** Whisper chạy cục bộ chuyển âm thanh tiếng Việt thành văn bản.
+- **Điều hướng:** phân tích câu → danh sách vùng → action `NavigateToPose`.
+  Lệnh từ A đến B luôn qua A trước, chỉ đi tiếp B khi A thành công.
+  Vùng không tồn tại trả `INVALID`, không gửi goal. Lệnh mới khi đang đi trả `BUSY`.
 
-## 1. Tải mã nguồn, cài đặt và build
+![Bản đồ phân vùng A, B, C](src/tht7_tb4/results/segmented_map.png)
 
-Yêu cầu hệ thống: **Ubuntu 22.04**, **ROS 2 Humble**, **TurtleBot 4 Ignition Simulator** và **Nav2**.
+| Dữ liệu | File |
+|---|---|
+| Ảnh bản đồ gốc và cấu hình dùng cho bài 7 | [map.pgm](src/tht7_tb4/config/map.pgm), [map.yaml](src/tht7_tb4/config/map.yaml) |
+| Bản đồ phân vùng để xem | [segmented_map.png](src/tht7_tb4/results/segmented_map.png) |
+| Nhãn đầy đủ các ô vùng (1/2/3 = A/B/C, 0 = chưa gán) | [region_labels.png](src/tht7_tb4/results/region_labels.png) |
+| Diện tích, đích và thông tin bản đồ | [segmentation.yaml](src/tht7_tb4/results/segmentation.yaml) |
 
-Mở terminal và chạy các lệnh sau để tải dự án từ GitHub về thư mục `~` (Home) và biên dịch:
+Ảnh gốc được sao từ bài 4; ngưỡng free của bài 7 giữ màu xám 205 là unknown.
+RViz dùng chữ không dấu để tránh lỗi font, lệnh giọng nói vẫn dùng tiếng Việt.
+
+## 2. Cài đặt và build
+
+Cần có TurtleBot 4 Ignition Simulator và Nav2 từ bài trước. Trên máy mới:
 
 ```bash
-# 1. Tai kho chua ve may
-cd ~
-git clone https://github.com/tuanvu162/tht4_tb4_ws.git
+git clone --branch BaiTHTuan7 https://github.com/tuanvu162/tht4_tb4_ws.git ~/tht4_tb4_ws
+```
 
-# 2. Di chuyen vao workspace va cai dat cac goi phu thuoc
+Nếu đã có workspace thì bỏ qua clone. Build cả hai package:
+
+```bash
 cd ~/tht4_tb4_ws
 source /opt/ros/humble/setup.bash
-rosdep install --from-paths src --ignore-src -r -y
-
-# 3. Build package va nap moi truong
-colcon build --packages-select tht4_tb4_nav
-source install/setup.bash
+rosdep install --from-paths src/tht4_tb4_nav src/tht7_tb4 --ignore-src -r -y
+PYTHONNOUSERSITE=1 colcon build --packages-select tht4_tb4_nav tht7_tb4 --symlink-install
 ```
 
----
-
-## 2. Mapping (Tạo bản đồ SLAM)
-
-**Bước 2.1 — Khởi chạy Gazebo, RViz2 và SLAM (Terminal 1):**
+Cài môi trường nhận giọng nói một lần bằng Python 3.10:
 
 ```bash
+sudo apt install python3-venv ffmpeg libportaudio2
 cd ~/tht4_tb4_ws
-source /opt/ros/humble/setup.bash
-source install/setup.bash
-ros2 launch tht4_tb4_nav bringup.launch.py mode:=mapping
+/usr/bin/python3 -m venv --system-site-packages .venv-tht7
+source .venv-tht7/bin/activate
+python -m pip install --upgrade pip 'setuptools<80' wheel packaging
+python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+python -m pip install -r src/tht7_tb4/requirements-voice.txt
 ```
 
-*(Nếu muốn mở cấu hình RViz2 đã lưu sẵn của dự án ở một terminal riêng: `rviz2 -d ~/tht4_tb4_ws/src/tht4_tb4_nav/rviz/maze.rviz`)*
+## 3. Chạy chương trình
 
-**Bước 2.2 — Rời đế sạc / Undock (Terminal 2):**
-
-Chờ robot xuất hiện và Gazebo đang ở trạng thái Play, chạy lệnh:
-
-```bash
-source /opt/ros/humble/setup.bash
-ros2 action send_goal /undock irobot_create_msgs/action/Undock "{}"
-```
-
-**Bước 2.3 — Điều khiển robot quét bản đồ (Chọn 1 trong 2 cách tại Terminal 2):**
-
-Sau khi terminal báo `SUCCEEDED`, điều khiển robot bằng bàn phím:
-
-* **Điều khiển bằng bàn phím (Teleop):**
-  ```bash
-  ros2 run teleop_twist_keyboard teleop_twist_keyboard
-  ```
-  Giữ terminal teleop được chọn: `i` tiến, `,` lùi, `j/l` xoay, `k` dừng.
-
-
-
-Khảo sát phần lớn mê cung, theo dõi map mở rộng trên RViz2 (Fixed Frame là `map`, Durability Policy của `/map` là `Transient Local`).  
-Có thể kiểm tra tần số `/scan` và `/odom` bằng `ros2 topic hz /scan` và `ros2 topic hz /odom`.
-
----
-
-## 3. Lưu bản đồ
-
-Khi bản đồ đã quét kín mê cung, nhấn `k` để dừng robot và bấm `Ctrl + C` tại cửa sổ điều khiển (giữ Terminal 1 đang chạy SLAM). Tại Terminal 2, chạy lệnh lưu bản đồ:
-
-```bash
-source /opt/ros/humble/setup.bash
-ros2 run nav2_map_server map_saver_cli \
-  -f ~/tht4_tb4_ws/src/tht4_tb4_nav/maps/map \
-  --ros-args -p use_sim_time:=true -p save_map_timeout:=10.0
-```
-
-Kiểm tra thư mục `maps/` đã có đủ 2 file `map.yaml` và `map.pgm`, bản đồ không bị nhân đôi tường hoặc lệch rõ rệt. Sau đó bấm `Ctrl + C` ở Terminal 1 và đóng Gazebo cũ.
-
----
-
-## 4. Localization và Navigation (AMCL & Nav2)
-
-**Bước 4.1 — Khởi động lại với bản đồ đã lưu, AMCL và Nav2 (Terminal 1):**
+Trong **mỗi terminal ROS**, chạy:
 
 ```bash
 cd ~/tht4_tb4_ws
 source /opt/ros/humble/setup.bash
 source install/setup.bash
-ros2 launch tht4_tb4_nav bringup.launch.py mode:=navigation \
-  map:=$HOME/tht4_tb4_ws/src/tht4_tb4_nav/maps/map.yaml
+export ROS_DOMAIN_ID=30
 ```
 
-**Bước 4.2 — Đặt vị trí ban đầu và gửi điểm đích trên RViz2:**
-1. Mở khóa robot khỏi trạm sạc (nếu cần):
-   ```bash
-   ros2 action send_goal /undock irobot_create_msgs/action/Undock "{}"
-   ```
-2. Trên thanh công cụ RViz2, chọn **2D Pose Estimate**, nhấp và kéo mũi tên tại vị trí thực tế của robot trong mê cung để khởi tạo AMCL.
-3. Chọn công cụ **Nav2 Goal**, nhấp vào vị trí đích trên bản đồ để robot tự động lập quỹ đạo và di chuyển tới đích.
+**Terminal 1 — mở mô phỏng, bản đồ có nhãn và Nav2:**
+
+```bash
+ros2 launch tht7_tb4 tht7.launch.py start_sim:=true use_nvidia:=true
+```
+
+Máy không có GPU/driver NVIDIA dùng `use_nvidia:=false`. Trong RViz đặt
+**2D Pose Estimate**, kiểm tra LiDAR khớp tường và robot sẵn sàng di chuyển.
+Gazebo phải ở trạng thái Play; dừng teleop và các node điều hướng khác.
+
+**Terminal 2 — nhận lệnh bằng micro:**
+
+```bash
+source .venv-tht7/bin/activate
+python -m tht7_tb4.speech_input --model small --seconds 5
+```
+
+Lần đầu cần mạng tải model. Nhấn **Enter**, nói trong 5 giây, đợi kết quả.
+Gõ `q` để thoát. Có thể liệt kê micro bằng `--list-devices`, chọn bằng `--device 2`.
+
+| Câu nói mẫu | Hành vi |
+|---|---|
+| Đi đến khu vực A. | Đi tới A |
+| Đi đến phòng thí nghiệm. | Đi tới B |
+| Đi đến hành lang. | Đi tới C |
+| Di chuyển từ khu vực A đến khu vực B. | Qua A, chờ thành công, rồi tới B |
+| Đi đến khu vực Z. | Báo vùng không tồn tại, không gửi đích |
+| Dừng lại. | Yêu cầu hủy goal và xóa tuyến còn lại |
+
+**Terminal 3 — theo dõi trạng thái:**
+
+```bash
+ros2 topic echo /voice_navigation/status std_msgs/msg/String \
+  --qos-durability transient_local
+```
+
+Có thể thử riêng điều hướng bằng văn bản trước khi dùng micro:
+
+```bash
+ros2 run tht7_tb4 send_command 'Đi đến khu vực A.'
+```
+
+Luồng: `micro → Whisper → /voice_command → voice_navigation → /navigate_to_pose → Nav2`.
+`/semantic_regions` hiển thị vùng trên RViz; `/voice_navigation/status` báo
+`ARRIVED`, `SUCCEEDED`, `INVALID`, `FAILED` hoặc trạng thái hủy. Nếu mất scan,
+quá thời gian hoặc goal thất bại, chương trình dừng tuyến/yêu cầu hủy phù hợp.
+
+## 4. Đổi khu vực và tạo lại bản đồ phân vùng
+
+Sửa tên, aliases, đích trong `src/tht7_tb4/config/regions.yaml`. Đích cũng là
+hạt giống phân vùng nên đổi đích sẽ đổi ranh giới vùng. Tạo lại ảnh:
+
+```bash
+ros2 run tht7_tb4 segment_map --output "$PWD/src/tht7_tb4/results"
+```
+
+Khởi động lại launch sau khi đổi cấu hình. Chi tiết thêm tại
+[README package](src/tht7_tb4/README.md).
+
+## 5. Kiểm tra và nội dung nộp
+
+```bash
+/usr/bin/python3 -m pytest src/tht7_tb4/test -q
+```
+
+Kiểm thử kiểm tra phân vùng, câu lệnh và giao tiếp với action server giả;
+cần quay demo thực tế để chứng minh robot di chuyển và tránh vật cản.
+
+- Video demo: bản đồ có ít nhất 3 vùng; nói ít nhất 3 câu; robot tới đúng vùng;
+  tuyến A → B; thử khu vực không tồn tại. Quay cả văn bản nhận dạng và robot chạy.
+- PDF **1–2 trang**: phương pháp segmentation, chuyển tọa độ, nhận dạng giọng
+  nói, luồng điều hướng, ảnh/kết quả thử nghiệm và link video/GitHub.
+- Source, bản đồ và cấu hình trong nhánh này. Không upload môi trường Python,
+  build/log hoặc trọng số Whisper đã tải.
+
+**Video demo:** chưa bổ sung. **Báo cáo PDF:** chưa bổ sung.

@@ -1,0 +1,39 @@
+method: four-connected multi-source geodesic BFS
+frame_id: map
+map_yaml_sha256: db4db4a0df16186faa643e129986bd97ebc70c174881b67384869e4f7f8b3960
+map_image_sha256: 74915213d30bbbaaaacaf7078da0e87a89fc11018774118e645a89a9461894b7
+resolution: 0.05
+origin:
+- -10.1
+- -10.1
+- 0.0
+label_image: region_labels.png
+unassigned_free_cells: 16
+regions:
+- id: A
+  name: Phòng học
+  label_value: 1
+  goal:
+    x: -2.550914764404297
+    y: -0.1849978119134903
+    yaw: 0.0
+  goal_clearance_m: 1.6681396961212158
+  area_m2: 161.51000000000002
+- id: B
+  name: Phòng thí nghiệm
+  label_value: 2
+  goal:
+    x: -2.691612482070923
+    y: 1.7170605659484863
+    yaw: 0.0
+  goal_clearance_m: 1.649999976158142
+  area_m2: 60.54250000000001
+- id: C
+  name: Hành lang
+  label_value: 3
+  goal:
+    x: -4.502142429351807
+    y: 3.153846025466919
+    yaw: 0.0
+  goal_clearance_m: 0.9390698671340942
+  area_m2: 57.12000000000001

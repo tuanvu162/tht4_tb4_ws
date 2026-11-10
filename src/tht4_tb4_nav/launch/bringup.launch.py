@@ -40,6 +40,9 @@ def generate_launch_description():
         DeclareLaunchArgument(
             'slam_params', default_value=get_package_share_directory('tht4_tb4_nav')
             + '/config/slam.yaml'),
+        DeclareLaunchArgument(
+            'nav2_params', default_value=get_package_share_directory('turtlebot4_navigation')
+            + '/config/nav2.yaml', description='Nav2 controller and costmap configuration'),
         OpaqueFunction(function=launch_workflow),
     ])
 
@@ -83,6 +86,7 @@ def launch_workflow(context):
                 {'use_sim_time': 'true', 'map': str(map_path)})], scoped=True),
             GroupAction(actions=[include_launch(
                 'turtlebot4_navigation', 'nav2.launch.py',
-                {'use_sim_time': 'true'})], scoped=True),
+                {'use_sim_time': 'true',
+                 'params_file': LaunchConfiguration('nav2_params')})], scoped=True),
         ])
     return actions

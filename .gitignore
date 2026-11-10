@@ -4,3 +4,7 @@ log/
 __pycache__/
 *.pyc
 .vscode/
+.venv-tht7/
+tht7_results/
+models/
+.pytest_cache/
