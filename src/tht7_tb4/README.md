@@ -89,10 +89,14 @@ y = oy + sin(theta)*lx + cos(theta)*ly
 Terminal 1:
 
 ```bash
-ros2 launch tht7_tb4 tht7.launch.py start_sim:=true
+ros2 launch tht7_tb4 tht7.launch.py
 ```
 
-Launch mặc định bật `use_nvidia:=true` cho laptop Intel + NVIDIA: Gazebo
+Launch mặc định bật `start_sim:=true`, `use_nvidia:=true` và đọc
+`config/regions.yaml` của package. Khi build bằng `--symlink-install`, file
+cấu hình này liên kết tới file trong `src/tht7_tb4/config/regions.yaml`.
+Vẫn cần source ROS/workspace và đặt `export ROS_DOMAIN_ID=30` trong mỗi terminal.
+Trên laptop Intel + NVIDIA, Gazebo
 (cả GUI và cảm biến GPU) và RViz kế thừa các biến PRIME render offload.
 Qt dùng `xcb` qua XWayland nếu desktop đang chạy Wayland. Cần khởi động lại
 phiên mô phỏng để đổi GPU; tiến trình đã chạy không chuyển GPU tại chỗ.
@@ -100,7 +104,7 @@ Kiểm tra bằng `nvidia-smi`: khi mô phỏng chạy, danh sách tiến trình
 Gazebo và RViz sử dụng VRAM. Trên máy không có driver NVIDIA, dùng:
 
 ```bash
-ros2 launch tht7_tb4 tht7.launch.py start_sim:=true use_nvidia:=false
+ros2 launch tht7_tb4 tht7.launch.py use_nvidia:=false
 ```
 
 Cấu hình theo [hướng dẫn PRIME render offload của NVIDIA](https://docs.nvidia.com/datacenter/tesla/driver-installation-guide/optimus-laptops-and-multi-gpu-desktop-systems.html).
@@ -129,7 +133,7 @@ chạy `ros2 daemon stop` rồi thử lại để làm mới discovery.
 Nếu đã có Gazebo + AMCL + Nav2, chỉ chạy:
 
 ```bash
-ros2 launch tht7_tb4 tht7.launch.py
+ros2 launch tht7_tb4 tht7.launch.py start_sim:=false
 ```
 
 Phiên Nav2 sẵn có phải dùng đúng map bài 7; nếu đang dùng cấu hình bản đồ cũ,
@@ -241,7 +245,7 @@ Node hủy tuyến nếu scan mất quá 3 giây, dữ liệu scan không hợp 
 không còn sẵn sàng, hoặc quá `goal_timeout` (180 giây mỗi đích). Có thể tăng:
 
 ```bash
-ros2 launch tht7_tb4 tht7.launch.py start_sim:=true goal_timeout:=300.0
+ros2 launch tht7_tb4 tht7.launch.py goal_timeout:=300.0
 ```
 
 Nếu chưa nhận được goal handle, node vẫn giữ trạng thái bận và sẽ hủy ngay
@@ -255,7 +259,7 @@ dùng chức năng dừng của robot/Nav2. Node này chỉ hủy goal do chính
 cd ~/tht4_tb4_ws
 source /opt/ros/humble/setup.bash
 source install/setup.bash
-/usr/bin/python3 -m pytest src/tht7_tb4/test -q
+PYTHONPATH=src/tht7_tb4 /usr/bin/python3 -m pytest src/tht7_tb4/test -q
 ```
 
 Kiểm thử gồm câu có/không dấu, tuyến A → B, không nhận một phần câu chứa vùng

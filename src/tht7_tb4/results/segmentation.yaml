@@ -14,26 +14,26 @@ regions:
   name: Phòng học
   label_value: 1
   goal:
-    x: -2.550914764404297
-    y: -0.1849978119134903
+    x: -6.38
+    y: -0.85
     yaw: 0.0
-  goal_clearance_m: 1.6681396961212158
-  area_m2: 161.51000000000002
+  goal_clearance_m: 0.800000011920929
+  area_m2: 152.14000000000004
 - id: B
   name: Phòng thí nghiệm
   label_value: 2
   goal:
-    x: -2.691612482070923
-    y: 1.7170605659484863
+    x: -8.12
+    y: 2.23
     yaw: 0.0
-  goal_clearance_m: 1.649999976158142
-  area_m2: 60.54250000000001
+  goal_clearance_m: 1.149224877357483
+  area_m2: 13.742500000000003
 - id: C
   name: Hành lang
   label_value: 3
   goal:
-    x: -4.502142429351807
-    y: 3.153846025466919
+    x: -3.12
+    y: 3.19
     yaw: 0.0
-  goal_clearance_m: 0.9390698671340942
-  area_m2: 57.12000000000001
+  goal_clearance_m: 2.0575196743011475
+  area_m2: 113.29000000000002

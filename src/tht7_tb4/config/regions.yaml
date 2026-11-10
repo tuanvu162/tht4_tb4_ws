@@ -6,15 +6,15 @@ regions:
   - id: A
     name: Phòng học
     aliases: [khu vực A, khu A, phòng A, A, a, ây, ay, phòng học]
-    goal: {x: -2.550914764404297, y: -0.1849978119134903, yaw: 0.0}
+    goal: {x: -6.38, y: -0.85, yaw: 0.0}
     color: [0.95, 0.35, 0.25]
   - id: B
     name: Phòng thí nghiệm
     aliases: [khu vực B, khu B, phòng B, B, bê, bi, phòng thí nghiệm]
-    goal: {x: -2.691612482070923, y: 1.7170605659484863, yaw: 0.0}
+    goal: {x: -8.12, y: 2.23, yaw: 0.0}
     color: [0.20, 0.65, 0.95]
   - id: C
     name: Hành lang
     aliases: [khu vực C, khu C, phòng C, C, xê, xi, si, hành lang]
-    goal: {x: -4.502142429351807, y: 3.153846025466919, yaw: 0.0}
+    goal: {x: -3.12, y: 3.19, yaw: 0.0}
     color: [0.25, 0.80, 0.40]

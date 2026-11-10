@@ -79,7 +79,7 @@ export ROS_DOMAIN_ID=30
 **Terminal 1 — mở mô phỏng, bản đồ có nhãn và Nav2:**
 
 ```bash
-ros2 launch tht7_tb4 tht7.launch.py start_sim:=true use_nvidia:=true
+ros2 launch tht7_tb4 tht7.launch.py
 ```
 
 Máy không có GPU/driver NVIDIA dùng `use_nvidia:=false`. Trong RViz đặt
@@ -151,4 +151,8 @@ cần quay demo thực tế để chứng minh robot di chuyển và tránh vậ
 - Source, bản đồ và cấu hình trong nhánh này. Không upload môi trường Python,
   build/log hoặc trọng số Whisper đã tải.
 
-**Video demo:** chưa bổ sung. **Báo cáo PDF:** chưa bổ sung.
+**Video demo:** chưa bổ sung.
+
+- [Báo cáo tóm tắt 2 trang](src/tht7_tb4/report/Bao_cao_BaiTH_Tuan7.pdf)
+- [Báo cáo chi tiết 8 trang](src/tht7_tb4/report/Bao_cao_chi_tiet_BaiTH_Tuan7.pdf)
+- [Sơ đồ kiến trúc](src/tht7_tb4/report/So_do_kien_truc_THT7.png)

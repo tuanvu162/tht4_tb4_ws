@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg
+  PUBLIC '-//W3C//DTD SVG 1.0//EN'
+  'http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd'>
+<svg width="511.27559055118115" height="390" preserveAspectRatio="xMinYMin meet" viewBox="0 0 511 390" xmlns="http://www.w3.org/2000/svg" version="1.0" fill-rule="evenodd" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<title>...</title>
+	<desc>...</desc>
+	<clipPath id="clip">
+		<rect x="0" y="0" width="511.27559055118115" height="390"/>
+	</clipPath>
+	<g id="group" transform="scale(1,-1) translate(0,-390)" style="clip-path: url(#clip)">
+		<g transform="">
+			<rect x="0" y="329" width="328.1377952755906" height="47" rx="6" ry="6" style="stroke: rgb(8%,29%,43%); stroke-linecap: butt; stroke-width: 0.7; fill: rgb(91%,94%,96%); fill-rule: evenodd;"/>
+			<text x="110.92270623154529" y="357.7" style="font-family: DV; font-size: 7.6px;fill: rgb(8%,19%,27%); stroke:none;" transform="translate(0,715) scale(1,-1)">Cấu hình bản đồ và khu vực</text>
+			<text x="91.08403435654529" y="347.3" style="font-family: DV; font-size: 7.6px;fill: rgb(8%,19%,27%); stroke:none;" transform="translate(0,694) scale(1,-1)">map.pgm + map.yaml + regions.yaml</text>
+			<rect x="366.27559055118115" y="329" width="145.0" height="47" rx="6" ry="6" style="stroke: rgb(8%,29%,43%); stroke-linecap: butt; stroke-width: 0.7; fill: rgb(91%,94%,96%); fill-rule: evenodd;"/>
+			<text x="402.87598117618114" y="352.5" style="font-family: DV; font-size: 7.6px;fill: rgb(8%,19%,27%); stroke:none;" transform="translate(0,705) scale(1,-1)">Người dùng / Micro</text>
+			<rect x="0" y="241" width="145" height="52" rx="6" ry="6" style="stroke: rgb(8%,29%,43%); stroke-linecap: butt; stroke-width: 0.7; fill: rgb(91%,94%,96%); fill-rule: evenodd;"/>
+			<text x="35.42587890625" y="272.2" style="font-family: DV; font-size: 7.6px;fill: rgb(8%,19%,27%); stroke:none;" transform="translate(0,544) scale(1,-1)">segment_map (CLI)</text>
+			<text x="19.2962890625" y="261.8" style="font-family: DV; font-size: 7.6px;fill: rgb(8%,19%,27%); stroke:none;" transform="translate(0,523) scale(1,-1)">OpenCV + BFS nhiều nguồn</text>
+			<rect x="183.13779527559058" y="241" width="145.0" height="52" rx="6" ry="6" style="stroke: rgb(8%,29%,43%); stroke-linecap: butt; stroke-width: 0.7; fill: rgb(91%,94%,96%); fill-rule: evenodd;"/>
+			<text x="225.96328355684057" y="272.2" style="font-family: DV; font-size: 7.6px;fill: rgb(8%,19%,27%); stroke:none;" transform="translate(0,544) scale(1,-1)">region_markers</text>
+			<text x="198.84189683809058" y="261.8" style="font-family: DV; font-size: 7.6px;fill: rgb(8%,19%,27%); stroke:none;" transform="translate(0,523) scale(1,-1)">Tính vùng và tạo MarkerArray</text>
+			<rect x="366.27559055118115" y="241" width="145.0" height="52" rx="6" ry="6" style="stroke: rgb(8%,29%,43%); stroke-linecap: butt; stroke-width: 0.7; fill: rgb(91%,94%,96%); fill-rule: evenodd;"/>
+			<text x="413.53564914493114" y="272.2" style="font-family: DV; font-size: 7.6px;fill: rgb(8%,19%,27%); stroke:none;" transform="translate(0,544) scale(1,-1)">speech_input</text>
+			<text x="388.98223117618113" y="261.8" style="font-family: DV; font-size: 7.6px;fill: rgb(8%,19%,27%); stroke:none;" transform="translate(0,523) scale(1,-1)">Thu âm 16 kHz + Whisper</text>
+			<rect x="0" y="148" width="145" height="52" rx="6" ry="6" style="stroke: rgb(8%,29%,43%); stroke-linecap: butt; stroke-width: 0.7; fill: rgb(95%,96%,91%); fill-rule: evenodd;"/>
+			<text x="28.82041015625" y="179.2" style="font-family: DV; font-size: 7.6px;fill: rgb(8%,19%,27%); stroke:none;" transform="translate(0,358) scale(1,-1)">File kết quả phân vùng</text>
+			<text x="14.418261718750003" y="168.79999999999998" style="font-family: DV; font-size: 7.6px;fill: rgb(8%,19%,27%); stroke:none;" transform="translate(0,337) scale(1,-1)">PNG nhãn + PNG màu + YAML</text>
+			<rect x="183.13779527559058" y="148" width="145.0" height="52" rx="6" ry="6" style="stroke: rgb(8%,29%,43%); stroke-linecap: butt; stroke-width: 0.7; fill: rgb(95%,96%,91%); fill-rule: evenodd;"/>
+			<text x="247.34756090059057" y="179.2" style="font-family: DV; font-size: 7.6px;fill: rgb(8%,19%,27%); stroke:none;" transform="translate(0,358) scale(1,-1)">RViz</text>
+			<text x="204.10586168184057" y="168.79999999999998" style="font-family: DV; font-size: 7.6px;fill: rgb(8%,19%,27%); stroke:none;" transform="translate(0,337) scale(1,-1)">Vùng màu, nhãn và bản đồ</text>
+			<rect x="366.27559055118115" y="148" width="145.0" height="52" rx="6" ry="6" style="stroke: rgb(8%,29%,43%); stroke-linecap: butt; stroke-width: 0.7; fill: rgb(91%,94%,96%); fill-rule: evenodd;"/>
+			<text x="406.75762180118113" y="179.2" style="font-family: DV; font-size: 7.6px;fill: rgb(8%,19%,27%); stroke:none;" transform="translate(0,358) scale(1,-1)">voice_navigation</text>
+			<text x="386.41055148868116" y="168.79999999999998" style="font-family: DV; font-size: 7.6px;fill: rgb(8%,19%,27%); stroke:none;" transform="translate(0,337) scale(1,-1)">commands.py + regions.py</text>
+			<rect x="0" y="47" width="145" height="56" rx="6" ry="6" style="stroke: rgb(8%,29%,43%); stroke-linecap: butt; stroke-width: 0.7; fill: rgb(91%,94%,96%); fill-rule: evenodd;"/>
+			<text x="33.23828125" y="80.2" style="font-family: DV; font-size: 7.6px;fill: rgb(8%,19%,27%); stroke:none;" transform="translate(0,160) scale(1,-1)">Gazebo / TurtleBot 4</text>
+			<text x="27.603222656250004" y="69.8" style="font-family: DV; font-size: 7.6px;fill: rgb(8%,19%,27%); stroke:none;" transform="translate(0,139) scale(1,-1)">LiDAR, odom, TF, /clock</text>
+			<rect x="183.13779527559058" y="47" width="145.0" height="56" rx="6" ry="6" style="stroke: rgb(8%,29%,43%); stroke-linecap: butt; stroke-width: 0.7; fill: rgb(91%,94%,96%); fill-rule: evenodd;"/>
+			<text x="217.01806871309057" y="80.2" style="font-family: DV; font-size: 7.6px;fill: rgb(8%,19%,27%); stroke:none;" transform="translate(0,160) scale(1,-1)">map_server + AMCL</text>
+			<text x="218.61377183809057" y="69.8" style="font-family: DV; font-size: 7.6px;fill: rgb(8%,19%,27%); stroke:none;" transform="translate(0,139) scale(1,-1)">Nạp map và định vị</text>
+			<rect x="366.27559055118115" y="47" width="145.0" height="56" rx="6" ry="6" style="stroke: rgb(8%,29%,43%); stroke-linecap: butt; stroke-width: 0.7; fill: rgb(91%,94%,96%); fill-rule: evenodd;"/>
+			<text x="428.93789523868116" y="80.2" style="font-family: DV; font-size: 7.6px;fill: rgb(8%,19%,27%); stroke:none;" transform="translate(0,160) scale(1,-1)">Nav2</text>
+			<text x="378.25947726993115" y="69.8" style="font-family: DV; font-size: 7.6px;fill: rgb(8%,19%,27%); stroke:none;" transform="translate(0,139) scale(1,-1)">Planner + controller + recovery</text>
+			<path d="M 72.5,329 L 72.5,293 Z" style="stroke: rgb(8%,29%,43%); stroke-linecap: butt; stroke-width: 1;"/>
+			<polygon points="72.5 293, 74.67483 297.5022, 70.32517 297.5022" style="stroke: rgb(8%,29%,43%); stroke-linecap: butt; stroke-width: 1; fill: rgb(8%,29%,43%); fill-rule: evenodd;"/>
+			<text x="84.0748046875" y="310" style="font-family: DV; font-size: 6.6px;fill: rgb(8%,29%,43%); stroke:none;" transform="translate(0,620) scale(1,-1)">map + vùng</text>
+			<path d="M 255.637795,329 L 255.637795,293 Z" style="stroke: rgb(8%,29%,43%); stroke-linecap: butt; stroke-width: 1;"/>
+			<polygon points="255.6378 293, 257.8126 297.5022, 253.463 297.5022" style="stroke: rgb(8%,29%,43%); stroke-linecap: butt; stroke-width: 1; fill: rgb(8%,29%,43%); fill-rule: evenodd;"/>
+			<path d="M 164.068898,329 L 164.068898,117 Z" style="stroke: rgb(8%,29%,43%); stroke-linecap: butt; stroke-width: 1;"/>
+			<path d="M 164.068898,117 L 218.137795,117 Z" style="stroke: rgb(8%,29%,43%); stroke-linecap: butt; stroke-width: 1;"/>
+			<path d="M 218.137795,117 L 218.137795,103 Z" style="stroke: rgb(8%,29%,43%); stroke-linecap: butt; stroke-width: 1;"/>
+			<polygon points="218.1378 103, 220.3126 107.5022, 215.963 107.5022" style="stroke: rgb(8%,29%,43%); stroke-linecap: butt; stroke-width: 1; fill: rgb(8%,29%,43%); fill-rule: evenodd;"/>
+			<text x="129.5817882627953" y="133" style="font-family: DV; font-size: 6.6px;fill: rgb(8%,29%,43%); stroke:none;" transform="translate(0,266) scale(1,-1)">map.yaml</text>
+			<path d="M 438.775591,329 L 438.775591,293 Z" style="stroke: rgb(8%,29%,43%); stroke-linecap: butt; stroke-width: 1;"/>
+			<polygon points="438.7756 293, 440.9504 297.5022, 436.6008 297.5022" style="stroke: rgb(8%,29%,43%); stroke-linecap: butt; stroke-width: 1; fill: rgb(8%,29%,43%); fill-rule: evenodd;"/>
+			<text x="452.89917453555614" y="310" style="font-family: DV; font-size: 6.6px;fill: rgb(8%,29%,43%); stroke:none;" transform="translate(0,620) scale(1,-1)">âm thanh</text>
+			<path d="M 72.5,241 L 72.5,200 Z" style="stroke: rgb(8%,29%,43%); stroke-linecap: butt; stroke-width: 1;"/>
+			<polygon points="72.5 200, 74.67483 204.5022, 70.32517 204.5022" style="stroke: rgb(8%,29%,43%); stroke-linecap: butt; stroke-width: 1; fill: rgb(8%,29%,43%); fill-rule: evenodd;"/>
+			<path d="M 255.637795,241 L 255.637795,200 Z" style="stroke: rgb(8%,29%,43%); stroke-linecap: butt; stroke-width: 1;"/>
+			<polygon points="255.6378 200, 257.8126 204.5022, 253.463 204.5022" style="stroke: rgb(8%,29%,43%); stroke-linecap: butt; stroke-width: 1; fill: rgb(8%,29%,43%); fill-rule: evenodd;"/>
+			<text x="225.54463121309058" y="222" style="font-family: DV; font-size: 6.6px;fill: rgb(8%,29%,43%); stroke:none;" transform="translate(0,444) scale(1,-1)">/semantic_regions</text>
+			<path d="M 438.775591,241 L 438.775591,200 Z" style="stroke: rgb(8%,29%,43%); stroke-linecap: butt; stroke-width: 1;"/>
+			<polygon points="438.7756 200, 440.9504 204.5022, 436.6008 204.5022" style="stroke: rgb(8%,29%,43%); stroke-linecap: butt; stroke-width: 1; fill: rgb(8%,29%,43%); fill-rule: evenodd;"/>
+			<text x="410.80937961368113" y="222" style="font-family: DV; font-size: 6.6px;fill: rgb(8%,29%,43%); stroke:none;" transform="translate(0,444) scale(1,-1)">/voice_command</text>
+			<path d="M 328.137795,352 L 354.275591,352 Z" style="stroke: rgb(8%,29%,43%); stroke-linecap: butt; stroke-width: 1;"/>
+			<path d="M 354.275591,352 L 354.275591,173 Z" style="stroke: rgb(8%,29%,43%); stroke-linecap: butt; stroke-width: 1;"/>
+			<path d="M 354.275591,173 L 366.275591,173 Z" style="stroke: rgb(8%,29%,43%); stroke-linecap: butt; stroke-width: 1;"/>
+			<polygon points="366.2756 173, 361.7734 175.1748, 361.7734 170.8252" style="stroke: rgb(8%,29%,43%); stroke-linecap: butt; stroke-width: 1; fill: rgb(8%,29%,43%); fill-rule: evenodd;"/>
+			<text x="346.04492648868114" y="187" style="font-family: DV; font-size: 6.6px;fill: rgb(8%,29%,43%); stroke:none;" transform="translate(0,374) scale(1,-1)">vùng</text>
+			<path d="M 430.775591,148 L 430.775591,103 Z" style="stroke: rgb(8%,29%,43%); stroke-linecap: butt; stroke-width: 1;"/>
+			<polygon points="430.7756 103, 432.9504 107.5022, 428.6008 107.5022" style="stroke: rgb(8%,29%,43%); stroke-linecap: butt; stroke-width: 1; fill: rgb(8%,29%,43%); fill-rule: evenodd;"/>
+			<text x="403.72280734805616" y="124" style="font-family: DV; font-size: 6.6px;fill: rgb(8%,29%,43%); stroke:none;" transform="translate(0,248) scale(1,-1)">goal</text>
+			<path d="M 448.775591,103 L 448.775591,148 Z" style="stroke: rgb(8%,29%,43%); stroke-linecap: butt; stroke-width: 1;"/>
+			<polygon points="448.7756 148, 446.6008 143.4978, 450.9504 143.4978" style="stroke: rgb(8%,29%,43%); stroke-linecap: butt; stroke-width: 1; fill: rgb(8%,29%,43%); fill-rule: evenodd;"/>
+			<text x="460.28296359805614" y="124" style="font-family: DV; font-size: 6.6px;fill: rgb(8%,29%,43%); stroke:none;" transform="translate(0,248) scale(1,-1)">kết quả</text>
+			<path d="M 145,75 L 183.137795,75 Z" style="stroke: rgb(8%,29%,43%); stroke-linecap: butt; stroke-width: 1;"/>
+			<polygon points="183.1378 75, 178.6356 77.17483, 178.6356 72.82517" style="stroke: rgb(8%,29%,43%); stroke-linecap: butt; stroke-width: 1; fill: rgb(8%,29%,43%); fill-rule: evenodd;"/>
+			<text x="155.3097179502953" y="82" style="font-family: DV; font-size: 6.6px;fill: rgb(8%,29%,43%); stroke:none;" transform="translate(0,164) scale(1,-1)">/scan</text>
+			<path d="M 328.137795,64 L 366.275591,64 Z" style="stroke: rgb(8%,29%,43%); stroke-linecap: butt; stroke-width: 1;"/>
+			<polygon points="366.2756 64, 361.7734 66.17483, 361.7734 61.82517" style="stroke: rgb(8%,29%,43%); stroke-linecap: butt; stroke-width: 1; fill: rgb(8%,29%,43%); fill-rule: evenodd;"/>
+			<text x="334.84941752276086" y="70" style="font-family: DV; font-size: 6.6px;fill: rgb(8%,29%,43%); stroke:none;" transform="translate(0,140) scale(1,-1)">map/TF</text>
+			<path d="M 308.137795,103 L 378.275591,148 Z" style="stroke: rgb(8%,29%,43%); stroke-linecap: butt; stroke-width: 1;"/>
+			<polygon points="378.2756 148, 373.3118 147.3992, 375.6606 143.7383" style="stroke: rgb(8%,29%,43%); stroke-linecap: butt; stroke-width: 1; fill: rgb(8%,29%,43%); fill-rule: evenodd;"/>
+			<text x="313.2487816037156" y="121" style="font-family: DV; font-size: 6.6px;fill: rgb(8%,29%,43%); stroke:none;" transform="translate(0,242) scale(1,-1)">pose/TF</text>
+			<path d="M 438.775591,47 L 438.775591,16 Z" style="stroke: rgb(8%,29%,43%); stroke-linecap: butt; stroke-width: 1;"/>
+			<path d="M 438.775591,16 L 72.5,16 Z" style="stroke: rgb(8%,29%,43%); stroke-linecap: butt; stroke-width: 1;"/>
+			<path d="M 72.5,16 L 72.5,47 Z" style="stroke: rgb(8%,29%,43%); stroke-linecap: butt; stroke-width: 1;"/>
+			<polygon points="72.5 47, 70.32517 42.49776, 74.67483 42.49776" style="stroke: rgb(8%,29%,43%); stroke-linecap: butt; stroke-width: 1; fill: rgb(8%,29%,43%); fill-rule: evenodd;"/>
+			<text x="204.38789293184058" y="4" style="font-family: DV; font-size: 6.6px;fill: rgb(8%,29%,43%); stroke:none;" transform="translate(0,8) scale(1,-1)">lệnh vận tốc → robot di chuyển</text>
+			<text x="182.58310777559058" y="382" style="font-family: DVB; font-size: 9px;fill: rgb(8%,29%,43%); stroke:none;" transform="translate(0,764) scale(1,-1)">SƠ ĐỒ KIẾN TRÚC HỆ THỐNG</text>
+		</g>
+	</g>
+</svg>

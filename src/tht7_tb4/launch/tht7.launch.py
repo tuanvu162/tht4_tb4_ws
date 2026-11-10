@@ -21,7 +21,7 @@ def generate_launch_description():
         'use_sim_time': ParameterValue(LaunchConfiguration('use_sim_time'), value_type=bool),
     }
     return LaunchDescription([
-        DeclareLaunchArgument('start_sim', default_value='false', choices=['true', 'false']),
+        DeclareLaunchArgument('start_sim', default_value='true', choices=['true', 'false']),
         DeclareLaunchArgument(
             'use_nvidia', default_value='true', choices=['true', 'false'],
             description='Use NVIDIA PRIME render offload for Gazebo and RViz'),
